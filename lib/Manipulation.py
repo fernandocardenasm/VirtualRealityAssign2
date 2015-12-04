@@ -505,7 +505,9 @@ class IsotonicAccelerationControlManipulation(Manipulation):
 
     # further variables if needed
     # ...
-
+    self._x = 0
+    self._y = 0
+    self._z = 0
       
     # init field connections
     self.mf_dof.connect_from(MF_DOF)
@@ -515,17 +517,41 @@ class IsotonicAccelerationControlManipulation(Manipulation):
 
   # override base class function
   def manipulate(self):
-  
+    
+
+    if self.mf_dof.value[0] == 0:
+      self._x += self._x*0.01
+    else:
+      self._x += self.mf_dof.value[0]*0.01
+
+    if self.mf_dof.value[1] == 0:
+      self._y += self._y*0.01
+    else:
+      self._y += self.mf_dof.value[1]*0.01
+
+    if self.mf_dof.value[2] == 0:
+      self._z += self._z*0.01
+    else:
+      self._z += self.mf_dof.value[2]*0.01  
+
+
     # implement functionality here
     # apply new matrix with self.set_matrix(MATRIX)
-    pass
+    
 
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(self._x * 0.02, self._y * 0.02, self._z * 0.02)
+
+    self.set_matrix(_new_mat) # apply new input matrix
+
+      
 
   # override base class function
   def reset(self):
 
     self.sf_mat.value = avango.gua.make_identity_mat() # snap hand to center
-
+    self._x = 0
+    self._y = 0
+    self._z = 0
     # implement further reset functionality here if needed
     # ...
 
