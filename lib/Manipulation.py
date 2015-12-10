@@ -423,12 +423,23 @@ class IsotonicPositionControlManipulation(Manipulation):
     _x = self.mf_dof.value[0]
     _y = self.mf_dof.value[1]
     _z = self.mf_dof.value[2]
-      
-    _x *= 0.1
-    _y *= 0.1
-    _z *= 0.1 #which effect?
-   
-    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+    
+    _threshold = 0.1
+
+    if abs(_x) > _threshold or abs(_y) > _threshold or abs(_z) > _threshold:
+      #Move Fast
+      _x *= 0.5
+      _y *= 0.5
+      _z *= 0.5
+      _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+
+    else:
+      #Move Slow
+      _x *= 0.01
+      _y *= 0.01
+      _z *= 0.01
+      _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+
 
     self.set_matrix(_new_mat) # apply new input matrix
     
