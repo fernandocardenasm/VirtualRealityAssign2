@@ -556,7 +556,7 @@ class IsotonicAccelerationControlManipulation(Manipulation):
     # ...
 
 
-
+#Case 2
 ### ELASTIC DEVICE MAPPINGS ### -> Task 2
 
 class ElasticPositionControlManipulation(Manipulation):
@@ -601,7 +601,7 @@ class ElasticPositionControlManipulation(Manipulation):
     # implement further reset functionality here if needed
     # ...
 
-
+#Case 4
 class ElasticRateControlManipulation(Manipulation):
 
   def my_constructor(self, SF_MATRIX, MF_DOF):
@@ -610,7 +610,9 @@ class ElasticRateControlManipulation(Manipulation):
 
     # further variables if needed
     # ...
-      
+    self._x = 0
+    self._y = 0
+    self._z = 0  
     # init field connections
     self.mf_dof.connect_from(MF_DOF)
     
@@ -622,14 +624,38 @@ class ElasticRateControlManipulation(Manipulation):
   
     # implement functionality here
     # apply new matrix with self.set_matrix(MATRIX)
-    pass
+    if self.mf_dof.value[0] == 0:
+      pass
+    else:
+      self._x += self.mf_dof.value[0]
+
+    if self.mf_dof.value[2] == 0:
+      pass
+    else:
+      self._y += self.mf_dof.value[2] * -1
+
+    if self.mf_dof.value[3] == 0:
+      pass
+    else:
+      self._z += self.mf_dof.value[3]  
+
+
+    # implement functionality here
+    # apply new matrix with self.set_matrix(MATRIX)
+    
+
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(self._x * 0.005, self._y * 0.005, self._z * 0.005)
+
+    self.set_matrix(_new_mat) # apply new input matrix
          
 
   # override base class function
   def reset(self):
   
     self.sf_mat.value = avango.gua.make_identity_mat() # snap hand to center
-  
+    self._x = 0
+    self._y = 0
+    self._z = 0
     # implement further reset functionality here if needed
     # ...
 
