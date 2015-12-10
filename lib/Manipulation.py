@@ -579,7 +579,18 @@ class ElasticPositionControlManipulation(Manipulation):
   
     # implement functionality here
     # apply new matrix with self.set_matrix(MATRIX)
-    pass
+    _x = self.mf_dof.value[0]
+    _y = self.mf_dof.value[2]*-1
+    #_z = self.mf_dof.value[3]
+    _z = self.mf_dof.value[3]
+      
+    _x *= 0.1
+    _y *= 0.1
+    _z *= 0.1 #which effect?
+   
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+
+    self.set_matrix(_new_mat) # apply new input matrix
 
 
   # override base class function
