@@ -658,12 +658,24 @@ class ElasticRateControlManipulation(Manipulation):
     if _x == 0 and _y == 0 and _z == 0:
       pass
     else:
-      _x *= 0.01
-      _y *= 0.01
-      _z *= 0.01 #which effect?
-      _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+      pass
+    _x *= 0.025
+    _y *= 0.025
+    _z *= 0.025
 
-      self.set_matrix(_new_mat) # apply new input matrix
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+
+    #length_new_mat = abs(self.sf_mat.value.get_translate().length() - _new_mat.get_translate().length())
+    length_new_mat = (_new_mat.get_translate() - self.sf_mat.value.get_translate()).length()
+
+    print(length_new_mat)
+
+    _x *= length_new_mat *100
+    _y *= length_new_mat *100
+    _z *= length_new_mat *100
+
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+    self.set_matrix(_new_mat) # apply new input matrix
          
 
   # override base class function
