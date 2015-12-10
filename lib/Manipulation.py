@@ -490,7 +490,7 @@ class IsotonicRateControlManipulation(Manipulation):
     # apply new matrix with self.set_matrix(MATRIX)
     
 
-    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(self._x * 0.05, self._y * 0.05, self._z * 0.05)
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(self._x * 0.005, self._y * 0.005, self._z * 0.005)
 
     self.set_matrix(_new_mat) # apply new input matrix
 
@@ -638,29 +638,21 @@ class ElasticRateControlManipulation(Manipulation):
   
     # implement functionality here
     # apply new matrix with self.set_matrix(MATRIX)
-    if self.mf_dof.value[0] == 0:
+    _x = self.mf_dof.value[0]
+    _y = self.mf_dof.value[2]*-1
+    #_z = self.mf_dof.value[3]
+    _z = self.mf_dof.value[3]
+      
+   
+    if _x == 0 and _y == 0 and _z == 0:
       pass
     else:
-      self._x += self.mf_dof.value[0]
+      _x *= 0.01
+      _y *= 0.01
+      _z *= 0.01 #which effect?
+      _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
 
-    if self.mf_dof.value[2] == 0:
-      pass
-    else:
-      self._y += self.mf_dof.value[2] * -1
-
-    if self.mf_dof.value[3] == 0:
-      pass
-    else:
-      self._z += self.mf_dof.value[3]  
-
-
-    # implement functionality here
-    # apply new matrix with self.set_matrix(MATRIX)
-    
-
-    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(self._x * 0.005, self._y * 0.005, self._z * 0.005)
-
-    self.set_matrix(_new_mat) # apply new input matrix
+      self.set_matrix(_new_mat) # apply new input matrix
          
 
   # override base class function
@@ -697,26 +689,26 @@ class ElasticAccelerationControlManipulation(Manipulation):
     # implement functionality here
     # apply new matrix with self.set_matrix(MATRIX)
     if self.mf_dof.value[0] == 0:
-      self._x += self._x*0.01
+      pass
     else:
-      self._x += self.mf_dof.value[0]*0.01
+      self._x += self.mf_dof.value[0]
 
     if self.mf_dof.value[2] == 0:
-      self._y += self._y*0.01
+      pass
     else:
-      self._y += self.mf_dof.value[2]*-0.01
+      self._y += self.mf_dof.value[2] * -1
 
     if self.mf_dof.value[3] == 0:
-      self._z += self._z*0.01
+      pass
     else:
-      self._z += self.mf_dof.value[3]*0.01  
+      self._z += self.mf_dof.value[3]  
 
 
     # implement functionality here
     # apply new matrix with self.set_matrix(MATRIX)
     
 
-    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(self._x * 0.02, self._y * 0.02, self._z * 0.02)
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(self._x * 0.0005, self._y * 0.0005, self._z * 0.0005)
 
     self.set_matrix(_new_mat) # apply new input matrix
     
