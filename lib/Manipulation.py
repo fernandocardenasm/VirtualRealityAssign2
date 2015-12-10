@@ -670,9 +670,9 @@ class ElasticRateControlManipulation(Manipulation):
 
     print(length_new_mat)
 
-    _x *= length_new_mat *100
-    _y *= length_new_mat *100
-    _z *= length_new_mat *100
+    _x *= length_new_mat *25
+    _y *= length_new_mat *25
+    _z *= length_new_mat *25
 
     _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
     self.set_matrix(_new_mat) # apply new input matrix
