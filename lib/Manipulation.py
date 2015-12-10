@@ -423,24 +423,35 @@ class IsotonicPositionControlManipulation(Manipulation):
     _x = self.mf_dof.value[0]
     _y = self.mf_dof.value[1]
     _z = self.mf_dof.value[2]
+    #_threshold = 0.1
 
-    _threshold = 0.1
+    # if abs(_x) > _threshold or abs(_y) > _threshold or abs(_z) > _threshold:
+    #   #Move Fast
+    #   _x *= 0.1
+    #   _y *= 0.1
+    #   _z *= 0.1
+    #   _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
 
-    if abs(_x) > _threshold or abs(_y) > _threshold or abs(_z) > _threshold:
-      #Move Fast
-      _x *= 0.3
-      _y *= 0.3
-      _z *= 0.3
-      _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+    # else:
+    #   #Move Slow
+    #   _x *= 0.1
+    #   _y *= 0.1
+    #   _z *= 0.1
+    
+    _x *= 0.08
+    _y *= 0.08
+    _z *= 0.08
 
-    else:
-      #Move Slow
-      _x *= 0.005
-      _y *= 0.005
-      _z *= 0.005
-      _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
 
+    length_new_mat = abs(self.sf_mat.value.get_translate().length() - _new_mat.get_translate().length())
+    print(length_new_mat)
 
+    _x *= length_new_mat *100
+    _y *= length_new_mat *100
+    _z *= length_new_mat *100
+
+    _new_mat = self.sf_mat.value * avango.gua.make_trans_mat(_x, _y, _z)
     self.set_matrix(_new_mat) # apply new input matrix
     
     
